@@ -17,15 +17,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ip'])) {
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8"><title>IP Locator</title><meta name="viewport" content="width=device-width,initial-scale=1">
-    <script src="tailwindcss.js"></script>
-    <link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css"/>
+    <script src="./tailwindcss.js"></script>
+    <link href="https://fastly.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" rel="stylesheet"/>
     <script src="https://fastly.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
-    <style>
-      body{font-family:system-ui,sans-serif;background:#f8fafc}
-      .map{height:160px;border-radius:0.375rem;margin-top:0.5rem}
-    </style>
 </head>
-<body class="p-3">
+<body class="p-3 bg-slate-50">
     <div class="max-w-4xl mx-auto">
         <h1 class="text-xl font-medium mb-4 text-center text-gray-700">IP Geolocation</h1>
         <div class="grid md:grid-cols-2 gap-4" id="cards"></div>
@@ -47,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ip'])) {
                         <div class="h-2 w-2 rounded-full" style="background:${s.color}"></div>
                     </div>
                     <div id="${s.id}-content" class="p-3 text-sm"><div class="animate-pulse h-4 w-20 bg-gray-200 rounded"></div></div>
-                    <div id="${s.id}-map" class="map hidden"></div>
+                    <div id="${s.id}-map" class="h-40 rounded-md mt-2 hidden"></div>
                 </div>`;
             
             // Process IP
