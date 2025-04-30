@@ -17,15 +17,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ip'])) {
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8"><title>IP Locator</title><meta name="viewport" content="width=device-width,initial-scale=1">
-    <script src="./tailwindcss.js"></script>
+    <script src="tailwindcss.js"></script>
     <link href="https://fastly.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" rel="stylesheet"/>
     <script src="https://fastly.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
 </head>
-<body class="p-3 bg-slate-50">
+<body class="bg-slate-50 font-sans p-3 md:p-6">
     <div class="max-w-4xl mx-auto">
-        <h1 class="text-xl font-medium mb-4 text-center text-gray-700">IP Geolocation</h1>
+        <h1 class="text-xl font-medium mb-6 text-center text-gray-700">IP Geolocation</h1>
         <div class="grid md:grid-cols-2 gap-4" id="cards"></div>
-        <div class="text-center text-xs text-gray-400 mt-6">Powered by Meituan API & OpenStreetMap</div>
+        <div class="text-center text-xs text-gray-400 mt-6">Powered by Meituan API & CARTO</div>
     </div>
     <script>
     (async () => {
@@ -42,7 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ip'])) {
                         <h2 class="text-sm font-medium text-gray-700">${s.label}</h2>
                         <div class="h-2 w-2 rounded-full" style="background:${s.color}"></div>
                     </div>
-                    <div id="${s.id}-content" class="p-3 text-sm"><div class="animate-pulse h-4 w-20 bg-gray-200 rounded"></div></div>
+                    <div id="${s.id}-content" class="p-3 text-sm">
+                        <div class="animate-pulse h-4 w-20 bg-gray-200 rounded"></div>
+                    </div>
                     <div id="${s.id}-map" class="h-40 rounded-md mt-2 hidden"></div>
                 </div>`;
             
@@ -83,11 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ip'])) {
                             <div><span class="text-gray-500">District:</span> ${data.district||'—'}</div>
                         </div>`;
                     
-                    // Show map
+                    // Show map with CARTO basemap
                     const mapEl = document.getElementById(`${s.id}-map`);
                     mapEl.classList.remove('hidden');
                     const map = L.map(mapEl, {zoomControl: false, attributionControl: false}).setView([data.lat, data.lng], 10);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                        subdomains: 'abcd'
+                    }).addTo(map);
                     L.circleMarker([data.lat, data.lng], {radius: 6, color: s.color, weight: 2, fillOpacity: 0.3}).addTo(map);
                     setTimeout(() => map.invalidateSize(), 100);
                 } catch (err) {
