@@ -6,6 +6,7 @@ WORKDIR /var/www/html
 
 # Copy PHP files
 COPY index.php .
+COPY tailwindcss.js .
 
 # Expose port 8000 for Render
 EXPOSE 8000
